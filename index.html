@@ -350,13 +350,30 @@ html[dir="rtl"] input[type=tel]{text-align:right}
 /* animated Black Friday band */
 .film.sale{padding:11px 0;color:#F3D27A;font-weight:800;letter-spacing:.16em;text-shadow:0 0 12px rgba(243,210,122,.5);overflow:hidden}
 .film.sale .mq{overflow:hidden;direction:ltr}
-.film.sale .mqt{display:inline-flex;white-space:nowrap;animation:mqmove 26s linear infinite;will-change:transform}
+.film.sale .mqt{display:inline-flex;white-space:nowrap;animation:mqmove 95s linear infinite;will-change:transform}
 .film.sale .it{padding:0 16px;unicode-bidi:isolate;display:inline-flex;gap:14px;align-items:center}
 .film.sale .it i{font-style:normal;color:#fff;opacity:.85}
-.film.sale .it b{background:linear-gradient(100deg,#B8860B,#FFE29A 45%,#B8860B);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:goldmove 2.4s linear infinite;font-size:1.12em}
+.film.sale .it b{background:linear-gradient(100deg,#B8860B,#FFE29A 45%,#B8860B);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:goldmove 4.5s linear infinite;font-size:1.12em}
 @keyframes mqmove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes goldmove{from{background-position:0 0}to{background-position:-220% 0}}
 @media (prefers-reduced-motion:reduce){.film.sale .mqt,.film.sale .it b{animation:none!important}}
+
+/* product stepper + bottom cart bar */
+.gstep{display:inline-flex;align-items:center;justify-content:space-between;border:1px solid var(--ink);border-radius:999px;min-width:116px}
+.gstep button{border:0;background:none;width:38px;height:36px;cursor:pointer;font-size:20px;font-weight:700}
+.gstep output{min-width:26px;text-align:center;font-weight:700}
+@media (max-width:560px){.gstep{width:100%}}
+.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -10px 30px -18px rgba(0,0,0,.45);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:10px;max-width:none}
+.cartbar .cb-info{display:flex;flex-direction:column;line-height:1.2;margin-inline-end:auto}
+.cartbar .cb-info b{font-size:15px}
+.cartbar .cb-info span{font-size:18px;font-weight:700;color:var(--accent)}
+.cartbar .btn.small{padding:10px 18px;min-height:44px}
+.cartbar.bump{animation:cbbump .45s ease}
+@keyframes cbbump{0%{transform:translateY(0)}35%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+body.has-bar{padding-bottom:84px}
+body.has-bar .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+@media (min-width:900px){.cartbar{left:50%;right:auto;transform:translateX(-50%);width:min(720px,100%);border:1px solid var(--line);border-bottom:0;border-radius:18px 18px 0 0}.cartbar.bump{animation:none}}
+@media (prefers-reduced-motion:reduce){.cartbar.bump{animation:none}}
 </style>
 </head>
 <body>
@@ -449,63 +466,12 @@ html[dir="rtl"] input[type=tel]{text-align:right}
                 <span class="err-msg" data-t="errPhone"></span>
               </div>
             </div>
-          </fieldset>
-
-          <fieldset>
-            <legend data-t="secDelivery"></legend>
-            <div class="field" data-req data-radio="method">
-              <span class="q" data-t="fMethod"></span>
-              <div class="choices">
-                <label><input type="radio" name="method" value="pickup"><span data-t="mPickup"></span></label>
-                <label><input type="radio" name="method" value="delivery"><span data-t="mDelivery"></span></label>
-              </div>
-              <span class="err-msg" data-t="req"></span>
-            </div>
-            <p class="note" data-t="shipNote" style="margin:-4px 0 14px"></p>
-            <div class="row hidden" id="addrRow">
-              <div class="field" data-req-delivery>
-                <label for="fCity" data-t="fCity"></label>
-                <input type="text" id="fCity" name="city" autocomplete="address-level2">
-                <span class="err-msg" data-t="req"></span>
-              </div>
-              <div class="field" data-req-delivery>
-                <label for="fAddress" data-t="fAddress"></label>
-                <input type="text" id="fAddress" name="address" autocomplete="street-address">
-                <span class="err-msg" data-t="req"></span>
-              </div>
-            </div>
             <div class="field" data-req>
-              <label for="fDate" data-t="fDate"></label>
-              <input type="date" id="fDate" name="date">
+              <label for="fAddress" data-t="fAddress"></label>
+              <input type="text" id="fAddress" name="address" autocomplete="street-address" data-tp="fAddressPh">
               <span class="err-msg" data-t="req"></span>
             </div>
-          </fieldset>
-
-          <fieldset>
-            <legend data-t="secFit"></legend>
-            <div class="field">
-              <span class="q"><span data-t="fSkin"></span> <span class="opt" data-t="optional"></span></span>
-              <div class="choices" id="skinChoices"></div>
-            </div>
-            <div class="field">
-              <span class="q"><span data-t="fShade"></span> <span class="opt" data-t="optional"></span></span>
-              <div class="choices" id="shadeChoices"></div>
-            </div>
-            <div class="field">
-              <label for="fAllergy"><span data-t="fAllergy"></span> <span class="opt" data-t="optional"></span></label>
-              <input type="text" id="fAllergy" name="allergy" data-tp="fAllergyPh">
-            </div>
-            <div class="field">
-              <span class="q" data-t="fGift"></span>
-              <div class="choices">
-                <label><input type="radio" name="gift" value="yes"><span data-t="yes"></span></label>
-                <label><input type="radio" name="gift" value="no" checked><span data-t="no"></span></label>
-              </div>
-            </div>
-            <div class="field hidden" id="giftNoteField">
-              <label for="fGiftNote"><span data-t="fGiftNote"></span> <span class="opt" data-t="optional"></span></label>
-              <textarea id="fGiftNote" name="giftNote" maxlength="200"></textarea>
-            </div>
+            <p class="note" data-t="shipNote" style="margin:0"></p>
           </fieldset>
 
           <fieldset>
@@ -526,10 +492,6 @@ html[dir="rtl"] input[type=tel]{text-align:right}
             <div class="field">
               <label for="fSource"><span data-t="fSource"></span> <span class="opt" data-t="optional"></span></label>
               <select id="fSource" name="source"></select>
-            </div>
-            <div class="field">
-              <label for="fNotes"><span data-t="fNotes"></span> <span class="opt" data-t="optional"></span></label>
-              <textarea id="fNotes" name="notes" maxlength="500"></textarea>
             </div>
             <div class="field" data-req data-check>
               <label class="check"><input type="checkbox" id="fConsent" name="consent"><span data-t="fConsent"></span></label>
@@ -576,6 +538,12 @@ html[dir="rtl"] input[type=tel]{text-align:right}
   </div>
 </div>
 
+<div class="cartbar hidden" id="cartBar" role="region" aria-label="Cart">
+  <div class="cb-info"><b id="cbCount"></b><span id="cbTotal"></span></div>
+  <button type="button" class="btn ghost small" id="cbCart" data-t="toCart"></button>
+  <button type="button" class="btn small" id="cbGo" data-t="checkout"></button>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -602,13 +570,13 @@ he:{
   how2:"עונים על כמה שאלות",how2s:"איסוף או משלוח, תאריך, סוג עור ותשלום.",
   how3:"שולחים בוואטסאפ",how3s:"ההזמנה מגיעה אלינו, ואנחנו מאשרים ומעדכנים כשהיא מוכנה.",
   footAddr:"טייבה",footHoursT:"שעות פעילות",footHours:"כל יום 09:00–20:00 (להזמנות)",
-  contactTop:"צור קשר",footContactT:"יצירת קשר",footContact:"שליחת הודעה בוואטסאפ",
+  toCart:"לסל",checkout:"סיום הזמנה",contactTop:"צור קשר",footContactT:"יצירת קשר",footContact:"שליחת הודעה בוואטסאפ",
   cartTitle:"הסל שלך",cartEmpty:"הסל ריק. אפשר לבחור מוצר ולהתחיל.",total:"סה״כ",
   toOrder:"המשך להזמנה",close:"סגירה",qty:"כמות",remove:"הסרה",
-  orderTitle:"פרטי ההזמנה",orderIntro:"כמה שאלות קצרות כדי שנכין את ההזמנה בדיוק לפי מה שצריך.",
-  secContact:"פרטי קשר",secDelivery:"איסוף או משלוח",secFit:"התאמה אישית",secPay:"תשלום",secMore:"עוד כמה פרטים",
+  orderTitle:"פרטי ההזמנה",orderIntro:"כמה פרטים קצרים ואנחנו מכינים את ההזמנה.",
+  secContact:"פרטים למשלוח",secDelivery:"איסוף או משלוח",secFit:"התאמה אישית",secPay:"תשלום",secMore:"עוד פרט קטן",
   fName:"שם מלא",fPhone:"טלפון (וואטסאפ)",fMethod:"איך לקבל את ההזמנה?",
-  mPickup:"איסוף מהחנות בטייבה",mDelivery:"משלוח עד הבית",fCity:"עיר או יישוב",fAddress:"רחוב ומספר בית",
+  mPickup:"איסוף מהחנות בטייבה",mDelivery:"משלוח עד הבית",fCity:"עיר או יישוב",fAddress:"כתובת מלאה",fAddressPh:"עיר, רחוב ומספר בית",fAddr1:1,
   fDate:"תאריך מועדף למשלוח (החל ממחר)",fSkin:"סוג עור",fShade:"גוון עור (להתאמת מייקאפ)",
   skins:{dry:"יבש",oily:"שמן",combo:"מעורב",sensitive:"רגיש",unsure:"לא ידוע"},
   shades:{light:"בהיר",medium:"בינוני",tan:"שחום",deep:"כהה"},
@@ -635,13 +603,13 @@ ar:{
   how2:"أجب عن بعض الأسئلة",how2s:"استلام أو توصيل، التاريخ، نوع البشرة وطريقة الدفع.",
   how3:"أرسل عبر واتساب",how3s:"يصلنا الطلب، فنؤكده ونبلغك عندما يجهز.",
   footAddr:"الطيبة",footHoursT:"ساعات العمل",footHours:"كل يوم 09:00–20:00 (للطلبات)",
-  contactTop:"تواصل معنا",footContactT:"تواصل معنا",footContact:"راسلنا عبر واتساب",
+  toCart:"إلى السلة",checkout:"إتمام الطلب",contactTop:"تواصل معنا",footContactT:"تواصل معنا",footContact:"راسلنا عبر واتساب",
   cartTitle:"سلتك",cartEmpty:"السلة فارغة. اختر منتجًا للبدء.",total:"المجموع",
   toOrder:"متابعة الطلب",close:"إغلاق",qty:"الكمية",remove:"إزالة",
-  orderTitle:"تفاصيل الطلب",orderIntro:"بعض الأسئلة القصيرة لنجهّز طلبك تمامًا كما تريد.",
-  secContact:"معلومات التواصل",secDelivery:"الاستلام أو التوصيل",secFit:"ملاءمة شخصية",secPay:"الدفع",secMore:"تفاصيل إضافية",
+  orderTitle:"تفاصيل الطلب",orderIntro:"بعض التفاصيل القصيرة ونجهّز الطلب.",
+  secContact:"تفاصيل التوصيل",secDelivery:"الاستلام أو التوصيل",secFit:"ملاءمة شخصية",secPay:"الدفع",secMore:"تفصيل صغير",
   fName:"الاسم الكامل",fPhone:"الهاتف (واتساب)",fMethod:"كيف تريد استلام الطلب؟",
-  mPickup:"استلام من المحل في الطيبة",mDelivery:"توصيل إلى البيت",fCity:"المدينة أو البلدة",fAddress:"الشارع ورقم البيت",
+  mPickup:"استلام من المحل في الطيبة",mDelivery:"توصيل إلى البيت",fCity:"المدينة أو البلدة",fAddress:"العنوان الكامل",fAddressPh:"المدينة، الشارع ورقم البيت",fAddr1:1,
   fDate:"التاريخ المفضّل للتوصيل (ابتداءً من الغد)",fSkin:"نوع البشرة",fShade:"لون البشرة (لاختيار كريم الأساس)",
   skins:{dry:"جافة",oily:"دهنية",combo:"مختلطة",sensitive:"حساسة",unsure:"لا أعرف"},
   shades:{light:"فاتحة",medium:"متوسطة",tan:"قمحية",deep:"داكنة"},
@@ -668,13 +636,13 @@ en:{
   how2:"Answer a few questions",how2s:"Pickup or delivery, date, skin type and payment.",
   how3:"Send on WhatsApp",how3s:"Your order reaches us, and we confirm and update you when it’s ready.",
   footAddr:"Taybeh",footHoursT:"Opening hours",footHours:"Every day 09:00–20:00 (for orders)",
-  contactTop:"Contact",footContactT:"Contact",footContact:"Message us on WhatsApp",
+  toCart:"View bag",checkout:"Checkout",contactTop:"Contact",footContactT:"Contact",footContact:"Message us on WhatsApp",
   cartTitle:"Your bag",cartEmpty:"Your bag is empty. Pick a product to start.",total:"Total",
   toOrder:"Continue to order",close:"Close",qty:"Quantity",remove:"Remove",
-  orderTitle:"Order details",orderIntro:"A few short questions so we can prepare your order just right.",
-  secContact:"Contact",secDelivery:"Pickup or delivery",secFit:"Personal fit",secPay:"Payment",secMore:"A few more details",
+  orderTitle:"Order details",orderIntro:"A few quick details and we’ll prepare your order.",
+  secContact:"Delivery details",secDelivery:"Pickup or delivery",secFit:"Personal fit",secPay:"Payment",secMore:"One last detail",
   fName:"Full name",fPhone:"Phone (WhatsApp)",fMethod:"How would you like to get your order?",
-  mPickup:"Pickup at the shop in Taybeh",mDelivery:"Home delivery",fCity:"City or town",fAddress:"Street and house number",
+  mPickup:"Pickup at the shop in Taybeh",mDelivery:"Home delivery",fCity:"City or town",fAddress:"Full address",fAddressPh:"City, street and house number",fAddr1:1,
   fDate:"Preferred delivery date (from tomorrow)",fSkin:"Skin type",fShade:"Skin tone (for foundation match)",
   skins:{dry:"Dry",oily:"Oily",combo:"Combination",sensitive:"Sensitive",unsure:"Not sure"},
   shades:{light:"Light",medium:"Medium",tan:"Tan",deep:"Deep"},
@@ -790,10 +758,6 @@ function applyText(){
     wt.querySelector(".num").textContent = dg.length === 10 ? dg.slice(0, 3) + "-" + dg.slice(3) : dg;
     wt.setAttribute("aria-label", t.contactTop + " · WhatsApp " + dg);
   }
-  const keepSkin=(document.querySelector('input[name=skin]:checked')||{}).value;
-  const keepShade=(document.querySelector('input[name=shade]:checked')||{}).value;
-  $("#skinChoices").innerHTML=Object.entries(t.skins).map(([k,v])=>`<label><input type="radio" name="skin" value="${k}" ${k===keepSkin?"checked":""}><span>${v}</span></label>`).join("");
-  $("#shadeChoices").innerHTML=Object.entries(t.shades).map(([k,v])=>`<label><input type="radio" name="shade" value="${k}" ${k===keepShade?"checked":""}><span>${v}</span></label>`).join("");
   const keepSrc=$("#fSource").value;
   $("#fSource").innerHTML=Object.entries(t.sources).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
   $("#fSource").value=keepSrc;
@@ -821,7 +785,9 @@ function renderGrid(){
     const nm = esc(p.name[lang]);
     const btn = p.out
       ? `<button type="button" class="add" disabled>${t.soldOut}</button>`
-      : `<button type="button" class="add ${inCart?"on":""}" data-add="${esc(p.id)}">${inCart?t.added+" · "+cart[p.id]:t.add}</button>`;
+      : (inCart
+        ? `<div class="gstep" role="group" aria-label="${t.qty}"><button type="button" data-gd="${esc(p.id)}" aria-label="−">−</button><output>${cart[p.id]}</output><button type="button" data-gi="${esc(p.id)}" aria-label="+">+</button></div>`
+        : `<button type="button" class="add" data-add="${esc(p.id)}">${t.add}</button>`);
     return `<article class="prod${p.out?" is-out":""}">
       <button type="button" class="prod-open" data-open="${esc(p.id)}" aria-label="${nm}"><div class="prod-art${p.img?" photo":""}">${badges.length?`<div class="badges">${badges.join("")}</div>`:""}${p.img?`<img src="${esc(p.img)}" alt="${esc(p.brand)} ${nm}" loading="lazy" referrerpolicy="no-referrer">`:art(p)}${photosOf(p).length>1?`<span class="pcount">1/${photosOf(p).length}</span>`:""}</div></button>
       <div class="prod-body">
@@ -839,9 +805,17 @@ function renderGrid(){
 function items(){return Object.keys(cart).filter(id=>byId[id]&&cart[id]>0).map(id=>({p:byId[id],q:cart[id]}))}
 function total(){return items().reduce((s,i)=>s+unit(i.p)*i.q,0)}
 function thumb(p){return p.img?`<img class="dot" src="${esc(p.img)}" alt="" style="object-fit:cover;background:#fff" referrerpolicy="no-referrer">`:`<span class="dot" style="background:${/^#[0-9a-f]{3,8}$/i.test(p.color)?p.color:"#C9A9B8"}"></span>`}
+function itemsText(n){ return ({he:n===1?"פריט אחד":n+" פריטים",ar:n===1?"منتج واحد":n+" منتجات",en:n===1?"1 item":n+" items"})[lang]; }
+function updateBar(n){
+  const bar=$("#cartBar"); bar.classList.toggle("hidden",!n); document.body.classList.toggle("has-bar",!!n);
+  if(n){ $("#cbCount").textContent=itemsText(n); $("#cbTotal").textContent=money(total()); }
+}
+function bumpBar(){ const b=$("#cartBar"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
 function renderCart(){
   const t=L(), list=items();
-  $("#cartCount").textContent = list.reduce((s,i)=>s+i.q,0);
+  const nItems=list.reduce((s,i)=>s+i.q,0);
+  $("#cartCount").textContent = nItems;
+  updateBar(nItems);
   $("#cartBody").innerHTML = list.length ? list.map(({p,q})=>`
     <div class="line">
       ${thumb(p)}
@@ -863,7 +837,15 @@ function toast(msg){const el=$("#toast");el.textContent=msg;el.classList.add("sh
 /* ===== Events ===== */
 document.querySelector(".langs").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(!b)return;lang=b.dataset.lang;store.set("ap_lang",lang);applyText();});
 $("#chips").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;cat=b.dataset.cat;renderChips();renderGrid();});
-$("#grid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const id=b.dataset.add;if(!byId[id]||byId[id].out)return;cart[id]=Math.min(99,(cart[id]||0)+1);save();renderGrid();renderCart();toast(L().addedToast);});
+$("#grid").addEventListener("click",e=>{
+  const b=e.target.closest("[data-add]");
+  if(b){const id=b.dataset.add;if(!byId[id]||byId[id].out)return;cart[id]=Math.min(99,(cart[id]||0)+1);save();renderGrid();renderCart();bumpBar();toast(L().addedToast);return}
+  const gi=e.target.closest("[data-gi]"), gd=e.target.closest("[data-gd]");
+  if(gi){cart[gi.dataset.gi]=Math.min(99,(cart[gi.dataset.gi]||0)+1)}
+  else if(gd){const id=gd.dataset.gd;cart[id]=(cart[id]||0)-1;if(cart[id]<=0)delete cart[id]}
+  else return;
+  save();renderGrid();renderCart();
+});
 $("#cartBody").addEventListener("click",e=>{
   const i=e.target.closest("[data-inc]"), d=e.target.closest("[data-dec]");
   if(i){cart[i.dataset.inc]=Math.min(99,cart[i.dataset.inc]+1);}
@@ -875,25 +857,23 @@ function openCart(){$("#drawer").classList.add("open");$("#scrim").classList.add
 function closeCart(){$("#drawer").classList.remove("open");$("#scrim").classList.remove("open");$("#drawer").setAttribute("aria-hidden","true")}
 $("#openCart").onclick=openCart; $("#closeCart").onclick=closeCart; $("#scrim").onclick=closeCart;
 $("#toOrder").onclick=()=>{closeCart();openPanel()};
+$("#cbCart").onclick=openCart; $("#cbGo").onclick=()=>{closeCart();openPanel()};
 function openPanel(){$("#formView").classList.remove("hidden");$("#doneView").classList.add("hidden");$("#panel").classList.add("open");document.body.style.overflow="hidden";$("#panel").scrollTop=0;$("#fName").focus();}
 function closePanel(){$("#panel").classList.remove("open");document.body.style.overflow=""}
 $("#closePanel").onclick=closePanel;
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeCart();closePanel()}});
-(function(){const d=new Date();$("#fDate").min=new Date(d.getTime()-d.getTimezoneOffset()*60000+86400000).toISOString().slice(0,10);})();
 
 const form=$("#orderForm");
 form.addEventListener("change",e=>{
-  if(e.target.name==="method") $("#addrRow").classList.toggle("hidden",e.target.value!=="delivery");
-  if(e.target.name==="gift") $("#giftNoteField").classList.toggle("hidden",e.target.value!=="yes");
   const f=e.target.closest(".field"); if(f) f.classList.remove("invalid");
 });
 form.addEventListener("input",e=>{const f=e.target.closest(".field"); if(f) f.classList.remove("invalid");});
 function validPhone(v){const d=v.replace(/\D/g,"");return /^0\d{8,9}$/.test(d)||/^972\d{8,9}$/.test(d)}
 function validate(){
-  let ok=true; const delivery=form.elements.method.value==="delivery";
+  let ok=true;
   form.querySelectorAll(".field").forEach(f=>{
     let bad=false;
-    if(f.hasAttribute("data-req")||(delivery&&f.hasAttribute("data-req-delivery"))){
+    if(f.hasAttribute("data-req")){
       if(f.dataset.radio) bad=!form.elements[f.dataset.radio].value;
       else if(f.hasAttribute("data-check")) bad=!f.querySelector("input").checked;
       else { const inp=f.querySelector("input,select,textarea"); bad=!inp.value.trim(); if(!bad&&f.hasAttribute("data-phone")) bad=!validPhone(inp.value); }
@@ -905,25 +885,20 @@ function validate(){
 function waUrl(text){return SET.whatsapp?`https://wa.me/${SET.whatsapp}?text=${encodeURIComponent(text)}`:"#"}
 
 function collect(){
-  const v=n=>(form.elements[n]&&form.elements[n].value||"").trim(), t=L();
+  const v=n=>(form.elements[n]&&form.elements[n].value||"").trim();
   return {
     lang, items: items().map(i=>({id:i.p.id,q:i.q})),
-    name:v("name"), phone:v("phone"), method:v("method"), city:v("city"), address:v("address"), date:v("date"),
-    skin: v("skin")?t.skins[v("skin")]:"", shade: v("shade")?t.shades[v("shade")]:"", allergy:v("allergy"),
-    gift:v("gift"), giftNote:v("giftNote"),
-    pay: ({cash:T.he.payCash,bit:T.he.payBit,card:T.he.payCard})[v("pay")]||"",
-    source: v("source")?T.he.sources[v("source")]:"", notes:v("notes")
+    name:v("name"), phone:v("phone"), method:"delivery", address:v("address"),
+    pay: ({cash:T.he.payCash,bit:T.he.payBit})[v("pay")]||"",
+    source: v("source")?T.he.sources[v("source")]:""
   };
 }
 function buildWa(num, o, res){
   const t=L();
   const lines=[`*${t.waNew} · Atelier Paris*`,`${t.doneNum}: ${num}`,"",`*${t.waItems}:*`,
     ...res.items.map(i=>`• ${i.name} × ${i.q} = ${money(i.sum)}`),`*${t.total}: ${money(res.total)}*`,"",
-    `${t.fName}: ${o.name}`,`${t.fPhone}: ${o.phone}`,`${t.fMethod} ${o.method==="delivery"?t.mDelivery:t.mPickup}`];
-  if(o.method==="delivery") lines.push(`${t.fCity}: ${o.city}`,`${t.fAddress}: ${o.address}`);
-  lines.push(`${t.fDate}: ${o.date}`);
-  lines.push(`${t.fPay}: ${({cash:t.payCash,bit:t.payBit})[form.elements.pay.value]||""}`);
-  if(o.notes) lines.push(`${t.fNotes}: ${o.notes}`);
+    `${t.fName}: ${o.name}`,`${t.fPhone}: ${o.phone}`,`${t.fAddress}: ${o.address}`,
+    `${t.fPay}: ${({cash:t.payCash,bit:t.payBit})[form.elements.pay.value]||""}`];
   return waUrl(lines.join("\n"));
 }
 function showDone(num, o, res, local){
@@ -966,7 +941,7 @@ form.addEventListener("submit",e=>{
       } else { err.textContent=t.errSend; err.classList.add("show"); }
     });
 });
-$("#newOrder").onclick=()=>{form.reset();$("#addrRow").classList.add("hidden");$("#giftNoteField").classList.add("hidden");closePanel();window.scrollTo(0,0)};
+$("#newOrder").onclick=()=>{form.reset();closePanel();window.scrollTo(0,0)};
 
 /* ===== Viewer ===== */
 const pv={list:[],i:0,prod:null};
