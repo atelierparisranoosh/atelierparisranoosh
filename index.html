@@ -367,7 +367,7 @@ html[dir="rtl"] input[type=tel]{text-align:right}
 .cartbar .cb-info{display:flex;flex-direction:column;line-height:1.2;margin-inline-end:auto}
 .cartbar .cb-info b{font-size:15px}
 .cartbar .cb-info span{font-size:18px;font-weight:700;color:var(--accent)}
-.cartbar .btn.small{padding:10px 18px;min-height:44px}
+.cartbar .btn.small{padding:10px 34px;min-height:46px;font-size:17px}
 .cartbar.bump{animation:cbbump .45s ease}
 @keyframes cbbump{0%{transform:translateY(0)}35%{transform:translateY(-6px)}100%{transform:translateY(0)}}
 body.has-bar{padding-bottom:84px}
@@ -540,8 +540,7 @@ body.has-bar .toast{bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 
 <div class="cartbar hidden" id="cartBar" role="region" aria-label="Cart">
   <div class="cb-info"><b id="cbCount"></b><span id="cbTotal"></span></div>
-  <button type="button" class="btn ghost small" id="cbCart" data-t="toCart"></button>
-  <button type="button" class="btn small" id="cbGo" data-t="checkout"></button>
+  <button type="button" class="btn small" id="cbCart" data-t="toCart"></button>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -857,7 +856,7 @@ function openCart(){$("#drawer").classList.add("open");$("#scrim").classList.add
 function closeCart(){$("#drawer").classList.remove("open");$("#scrim").classList.remove("open");$("#drawer").setAttribute("aria-hidden","true")}
 $("#openCart").onclick=openCart; $("#closeCart").onclick=closeCart; $("#scrim").onclick=closeCart;
 $("#toOrder").onclick=()=>{closeCart();openPanel()};
-$("#cbCart").onclick=openCart; $("#cbGo").onclick=()=>{closeCart();openPanel()};
+$("#cbCart").onclick=openCart;
 function openPanel(){$("#formView").classList.remove("hidden");$("#doneView").classList.add("hidden");$("#panel").classList.add("open");document.body.style.overflow="hidden";$("#panel").scrollTop=0;$("#fName").focus();}
 function closePanel(){$("#panel").classList.remove("open");document.body.style.overflow=""}
 $("#closePanel").onclick=closePanel;
