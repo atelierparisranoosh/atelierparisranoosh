@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Atelier Paris Taybeh · אטלייר פאריס טייבה</title>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8NMBYSCNVN"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-8NMBYSCNVN");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Frank+Ruhl+Libre:wght@500;700&family=Amiri:wght@400;700&family=Assistant:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
@@ -704,6 +707,8 @@ const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&
 const unit = p => p.sale || p.price;
 const r2 = n => Math.round(Number(n)*100)/100;
 const ltr = s => "\u2066"+s+"\u2069";
+const track = (name,params) => { try{ if(window.gtag) window.gtag("event",name,params); }catch(e){} };
+const trackAdd = id => { try{ const p=byId[id]; if(p) track("add_to_cart",{currency:"ILS",value:unit(p),items:[{item_id:String(id),item_name:p.name&&p.name.he||"",price:unit(p),quantity:1}]}); }catch(e){} };
 const numSet = (v,d) => { const n=Number(v); return (v===undefined||v===null||v===""||isNaN(n)) ? d : Math.max(0,n); };
 const shipFee = () => numSet(SET.shipFee,30);
 const freeFrom = () => numSet(SET.freeFrom,300);
@@ -874,9 +879,9 @@ document.querySelector(".langs").addEventListener("click",e=>{const b=e.target.c
 $("#chips").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;cat=b.dataset.cat;renderChips();renderGrid();});
 $("#grid").addEventListener("click",e=>{
   const b=e.target.closest("[data-add]");
-  if(b){const id=b.dataset.add;if(!byId[id]||byId[id].out)return;cart[id]=Math.min(99,(cart[id]||0)+1);save();renderGrid();renderCart();bumpBar();toast(L().addedToast);return}
+  if(b){const id=b.dataset.add;if(!byId[id]||byId[id].out)return;cart[id]=Math.min(99,(cart[id]||0)+1);trackAdd(id);save();renderGrid();renderCart();bumpBar();toast(L().addedToast);return}
   const gi=e.target.closest("[data-gi]"), gd=e.target.closest("[data-gd]");
-  if(gi){cart[gi.dataset.gi]=Math.min(99,(cart[gi.dataset.gi]||0)+1)}
+  if(gi){cart[gi.dataset.gi]=Math.min(99,(cart[gi.dataset.gi]||0)+1);trackAdd(gi.dataset.gi)}
   else if(gd){const id=gd.dataset.gd;cart[id]=(cart[id]||0)-1;if(cart[id]<=0)delete cart[id]}
   else return;
   save();renderGrid();renderCart();
@@ -946,6 +951,7 @@ function buildWa(num, o, res0){
 }
 function showDone(num, o, res, local){
   $("#orderNum").textContent=num;
+  try{ const r=normRes(res); track("purchase",{transaction_id:String(num),currency:"ILS",value:r.total,shipping:r.ship,items:r.items.map(i=>({item_name:i.name,quantity:i.q,price:i.q?r2(i.sum/i.q):0}))}); }catch(e){}
   (function(){const isBit=form.elements.pay&&form.elements.pay.value==="bit";$("#bitBox").classList.toggle("hidden",!isBit);$("#bitNum").textContent=BIT_NUM||"";$("#bitNum").classList.toggle("hidden",!BIT_NUM);$("#bitLater").classList.toggle("hidden",!!BIT_NUM);$('#bitBox [data-t="doneBit"]').classList.toggle("hidden",!BIT_NUM);})();
   $("#waLink").href=buildWa(num,o,res);
   $("#waLink").classList.toggle("hidden",!SET.whatsapp);
@@ -1014,7 +1020,7 @@ $("#pvClose").onclick=closeViewer;
 $("#pv").addEventListener("click",e=>{
   if(e.target.id==="pv") return closeViewer();
   const k=e.target.closest("[data-k]"); if(k){pv.i=+k.dataset.k;pvRender();return}
-  const a=e.target.closest("[data-pvadd]"); if(a){const id=a.dataset.pvadd;cart[id]=Math.min(99,(cart[id]||0)+1);save();renderGrid();renderCart();pvInfo();pvRender();toast(L().addedToast);}
+  const a=e.target.closest("[data-pvadd]"); if(a){const id=a.dataset.pvadd;cart[id]=Math.min(99,(cart[id]||0)+1);trackAdd(id);save();renderGrid();renderCart();pvInfo();pvRender();toast(L().addedToast);}
 });
 (function(){let x0=null;const st=$("#pvStage");
   st.addEventListener("touchstart",e=>{x0=e.touches[0].clientX},{passive:true});
